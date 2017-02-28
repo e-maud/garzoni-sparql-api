@@ -1,2 +1,2 @@
-# Queries
-test of grlc service
+# queries
+Test of grlc service
