@@ -1,6 +1,7 @@
 
 #+ summary: Average age difference between couples in 1427 in Tuscany
 #+ endpoint: http://virtuoso.clariah-sdh.eculture.labs.vu.nl/sparql
+#+ method: GET
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
