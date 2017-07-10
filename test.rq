@@ -1,0 +1,8 @@
+#+ endpoint: http://fuseki:3030/suds/query
+#+ method: GET
+#+ summary: Selects all resources.
+
+SELECT ?s ?p ?o 
+WHERE {
+	?s ?p ?_object_iri .
+}
