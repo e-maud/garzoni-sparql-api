@@ -11,11 +11,11 @@ PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
 SELECT ?year (COUNT (?c) AS ?NbContracts)
-WHERE
+WHERE 
 {
   ?c a grz-owl:Contract .
   ?c sem:hasTimeStamp ?date .
-  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate)
+  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
   BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).
 }
 GROUP BY ?year
