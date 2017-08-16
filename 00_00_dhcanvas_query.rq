@@ -1,3 +1,7 @@
+#+ summary: dhc query
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+
 SELECT ?date ?manifestUuid ?canvasCode ?role (group_concat(?wf;separator=" | ") as ?profession) ?insigna ?parish CONCAT(?father1, ?father2, ?father3) AS ?fatherName ?geoOrigin
 WHERE
 {
