@@ -1,0 +1,32 @@
+SELECT ?date ?manifestUuid ?canvasCode ?role (group_concat(?wf;separator=" | ") as ?profession) ?insigna ?parish CONCAT(?father1, ?father2, ?father3) AS ?fatherName ?geoOrigin
+WHERE
+{
+   ?p a common:Person .
+   ?p dhc:uuid "6176d4e1-c8bb-4c56-a5e5-b1e978af5050" .
+   ?p core:referredBy ?pm .
+   ?pm core:isMentionedIn/sem:hasTimeStamp ?date.
+   ?pm grz-owl:hasRole ?r .
+   ?pm core:isMentionedIn ?contract .
+   ?contract ^edm:realizes/meta:isImagedBy/iiif:service  ?l .
+
+   OPTIONAL {?x common:isFatherOf ?p . ?x rdfs:label ?isFatherOf .}
+   OPTIONAL {?p  common:isSonOf/rdfs:label ?isSonOf .}
+
+   OPTIONAL {?pm grz-owl:hasGeographicalOrigin/common:transcript ?g . }
+   OPTIONAL {?pm grz-owl:hasWorkshop/grz-owl:insigna ?i .}
+   OPTIONAL {?pm grz-owl:hasWorkshop/grz-owl:hasLocation/common:inParish ?par .}
+   OPTIONAL {?pm grz-owl:hasProfession/common:transcript ?wf . }
+
+   BIND(xsd:string(IF(?isFatherOf=?isSonOf, ?isFatherOf, ?isFatherOf)) AS ?father1)
+   BIND(xsd:string(IF(!bound(?isFatherOf), ?isSonOf, "")) AS ?father2)
+   BIND(xsd:string(IF(!bound(?isSonOf), ?isFatherOf, "")) AS ?father3)
+   BIND(STRAFTER(STR(?l), "view/") AS ?temp)
+   BIND(STRAFTER(STR(?temp), "/") AS ?canvasCode)
+   BIND(STRBEFORE(STR(?temp), "/") AS ?manifestUuid)
+   BIND(STRAFTER(STR(?r), "#") AS ?role)
+   BIND(STR(?par) AS ?parish)
+   BIND(STR(?g) AS ?geoOrigin)
+   BIND(STR(?i) AS ?insigna)
+}
+GROUP BY ?date ?r ?geoOrigin ?father3 ?father2 ?father1 ?parish ?insigna ?role ?canvasCode ?manifestUuid ?date
+ORDER BY DESC(?date)
