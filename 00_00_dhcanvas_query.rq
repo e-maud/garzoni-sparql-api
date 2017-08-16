@@ -2,7 +2,7 @@
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET
 
-SELECT ?date ?manifestUuid ?canvasCode ?role (GROUP_CONCAT(?wf ; separator=" | ") as ?profession) ?insigna ?parish (CONCAT(?father1, ?father2, ?father3) AS ?fatherName) ?geoOrigin
+SELECT ?date ?manifestUuid ?canvasCode ?role (GROUP_CONCAT(?wf ; separator=" | ") AS ?profession) ?insigna ?parish (CONCAT(?father1, ?father2, ?father3) AS ?fatherName) ?geoOrigin
 WHERE
 {
    ?p a common:Person ; core:referredBy ?pm ; dhc:uuid "6176d4e1-c8bb-4c56-a5e5-b1e978af5050" .
