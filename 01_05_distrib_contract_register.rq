@@ -1,8 +1,9 @@
-#+ summary: What is the distribution of contracts per year? 
+#+ summary: What is the distribution of contracts per register? 
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET#+ tags:
 #+   - barchart
 #+   - archive
+#+ params: ?_year 
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -11,12 +12,12 @@ PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
-SELECT ?year (COUNT (?c) AS ?NbContracts)
+SELECT (STR(?label) AS ?label) (COUNT (?contract) AS ?NbContracts)
 WHERE 
-{
-  ?c a grz-owl:Contract ; sem:hasTimeStamp ?date .
-  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
-  BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).
+{ 
+  ?reg a meta:Register ; meta:hasPage ?page ; rdfs:label ?label .
+  ?page edm:realizes ?contract .
+  ?contract  a grz-owl:Contract .
 }
-GROUP BY ?year
-ORDER BY ASC (?year)
+GROUP BY ?label
+ORDER BY ASC (?label)
