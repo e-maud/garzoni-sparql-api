@@ -1,0 +1,22 @@
+#+ summary: What is the total number of contracts between date x and date y? or before/after date x? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET#+ tags:
+#+   - number
+#+   - archive
+#+ params: ?_date1 ?_date2
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT (COUNT (?contract) AS ?NbContracts)
+WHERE 
+{ 
+  ?contract a grz-owl:Contract ; sem:hasTimeStamp ?date.
+  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
+  BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).
+  FILTER (?year > ?_date1 AND ?year < ?_date2)
+}
