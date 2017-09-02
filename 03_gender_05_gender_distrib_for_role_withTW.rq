@@ -1,0 +1,25 @@
+#+ summary: What is the gender distribution for a given role and within a given time window (on person entities) ? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - gender
+# params: ?_role and date
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT ?gender (COUNT (distinct ?pe) AS ?NbPerson)
+WHERE
+{
+  ?pe  a common:Person ; grz-owl:hasRole ?roleStmt .
+  ?roleStmt sem:hasTimeStamp ?date . 
+  ?roleStmt rdf:value  grz-owl:Guarantor .
+  ?pe foaf:gender ?gender .
+  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
+  FILTER (?myDate > "1591-03-15"^^xsd:dateTime AND ?myDate < "1598-03-15"^^xsd:dateTime)
+}
+GROUP BY ?gender
