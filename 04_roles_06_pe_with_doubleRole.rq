@@ -1,0 +1,24 @@
+#+ summary: Give me all person entities who had 2 different roles (e.g. master & apprentice). 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - roles
+#+ params: ?_role1 ?_role2
+# N.B: roles can be changed/added and more information can be asked about the person entity.
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT ?pe COUNT (distinct ?pm) AS ?nbMentions
+WHERE
+{
+  ?pe  a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Apprentice ; grz-owl:hasRole/rdf:value grz-owl:Master .
+  ?pe core:referredBy ?pm .
+}
+GROUP BY ?pe
+HAVING  COUNT (distinct ?pm) > 1
+ORDER BY DESC (COUNT (distinct ?pm))

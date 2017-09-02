@@ -1,0 +1,26 @@
+#+ summary: Give me the apprentices who have the same guarantor in 2 different contracts. 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - roles
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT ?app ?appName ?guar ?guarName ?contract1 AS ?contract ?date1 AS ?date
+WHERE 
+{
+  ?guar a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Guarantor ; rdfs:label ?guarName .
+  ?app a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Apprentice  ; rdfs:label ?appName .
+  ?app common:hasGuarantor/rdf:value ?guar .
+  ?app core:referredBy/core:isMentionedIn ?contract1 , ?contract2 .
+  ?contract1 sem:hasTimeStamp ?date1 .
+  ?contract2 sem:hasTimeStamp ?date2 .
+  FILTER (?contract1 != ?contract2)
+}
+GROUP BY ?app ?guar ?guarName ?appName
+ORDER BY ?app

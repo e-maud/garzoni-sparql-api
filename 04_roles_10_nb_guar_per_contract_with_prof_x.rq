@@ -1,0 +1,41 @@
+#+ summary: TO BE REVISED WITH PROFESSION THESAURUS - Number of guarantor per contract given a profession. 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - roles
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT ?numberOfGuar COUNT (distinct ?app)
+WHERE
+{
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+  SELECT ?app COUNT (distinct ?guar) AS ?numberOfGuar
+  WHERE 
+  {
+    ?guar a grz-owl:Person . 
+    ?app a grz-owl:Person .
+    ?master a grz-owl:Person .
+    ?guar  grz-owl:role/grz-owl:value/grz-owl:roleType grz-owl:guarantor .
+    ?master  grz-owl:role/grz-owl:value/grz-owl:roleType grz-owl:master .
+    ?app  grz-owl:role/grz-owl:value/grz-owl:roleType grz-owl:apprentice .
+    ?app grz-owl:has_master/grz-owl:value ?master .
+    ?app grz-owl:has_guarantor/grz-owl:value ?guar .
+    ?master grz-owl:profession/grz-owl:value/grz-owl:professionCategory "stampa" .
+  }
+  GROUP BY ?app
+}
+GROUP BY ?numberOfGuar
+ORDER BY ASC (?numberOfGuar)

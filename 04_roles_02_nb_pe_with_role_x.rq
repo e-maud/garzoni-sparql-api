@@ -1,0 +1,17 @@
+#+ summary: What is the total number of person entities having role x ? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - roles
+# param: ?_role (in this ex, apprentice)
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT (COUNT (distinct ?pe) AS ?NbEntity)
+WHERE
+{ ?pe a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Apprentice .}
