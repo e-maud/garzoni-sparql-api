@@ -1,0 +1,24 @@
+#+ summary: Who are the apprentices mentioned in more than 1 contract with different roles? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - apprentices
+#+  params: ?_nbappMentions
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT ?app ?appName (COUNT (distinct ?appMention) AS ?nbMentions)
+WHERE
+{
+  ?app  a common:Person ; grz-owl:hasRole/rdf:value ?role1, ?role2 ; rdfs:label ?appName .
+  ?app core:referredBy ?appMention .
+  FILTER (?role1 != ?role2)
+}
+GROUP BY ?app ?appName
+HAVING  COUNT (distinct ?appMention) > 1
+ORDER BY DESC (COUNT (distinct ?appMention))

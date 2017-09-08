@@ -1,0 +1,20 @@
+#+ summary: What is the average age of apprentices (all, for ages indicated in integers)? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - apprentices
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT AVG (?age)
+WHERE
+{
+  ?app  a common:PersonMention .
+  ?app grz-owl:hasRole  grz-owl:Apprentice .
+  ?app foaf:age ?age .
+}
