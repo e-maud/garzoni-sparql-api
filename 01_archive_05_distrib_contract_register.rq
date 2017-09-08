@@ -4,12 +4,12 @@
 #+ tags:
 #+   - archive
 
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#> .
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#> .
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#> .
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#> 
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#> 
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#> 
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT (STR(?label) AS ?label) (COUNT (?contract) AS ?NbContracts)
 WHERE 
