@@ -14,9 +14,7 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 SELECT ?role ?countWomen ?countMen
 WHERE
 {
-
   {SELECT ?role (COUNT (distinct ?women) AS ?countWomen)
-    WHERE {?women a common:Person; foaf:gender "female"; grz-owl:hasRole/rdf:value ?role .}}
 
   {SELECT ?role (COUNT (distinct ?men) AS ?countMen)
     WHERE {?men a common:Person; foaf:gender "male"; grz-owl:hasRole/rdf:value ?role .}}  

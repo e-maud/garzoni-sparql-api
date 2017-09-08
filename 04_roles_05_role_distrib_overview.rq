@@ -18,60 +18,17 @@ SELECT
 ?countMen (?countMen*100/?totalMen As ?percentMenReRole)
 WHERE 
 { 
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
   { SELECT (COUNT (distinct ?pm) AS ?total) WHERE {?pm a common:PersonMention ; foaf:gender ?g. } }
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
+  
   { SELECT (COUNT (distinct ?pm) AS ?totalMen) WHERE {?pm a common:PersonMention; foaf:gender "male".} }
 
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
   { SELECT (COUNT (distinct ?pm) AS ?totalWomen) WHERE {?pm a common:PersonMention; foaf:gender "female".} }
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
   { SELECT ?role (COUNT (distinct ?pm) AS ?countMentions) 
     WHERE {?pm a common:PersonMention; grz-owl:hasRole ?role .}}
 
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
   {SELECT ?role (COUNT (distinct ?women) AS ?countWomen)
     WHERE {?women a common:PersonMention; foaf:gender "female"; grz-owl:hasRole ?role .}}
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
   {SELECT ?role (COUNT (distinct ?men) AS ?countMen) 
     WHERE {?men a common:PersonMention; foaf:gender "male"; grz-owl:hasRole ?role .}}  

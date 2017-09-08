@@ -14,22 +14,7 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 SELECT STRAFTER(STR(?role), "#") AS ?role ?numberOfMentions (?numberOfMentions*100/?total as ?percent)
 WHERE 
 { 
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
   { SELECT (COUNT (distinct ?pm) AS ?total) WHERE {?pm a common:PersonMention.} }
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
   { SELECT ?role (COUNT (distinct ?pm) AS ?numberOfMentions) 
     WHERE {?pm a common:PersonMention; grz-owl:hasRole ?role .}
