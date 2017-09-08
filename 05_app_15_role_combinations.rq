@@ -1,0 +1,25 @@
+#+ summary: Give me the possible apprentice combinations of roles with their frequency (currently not working, to be revised) 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+```` sparql
+#+ tags:
+#+   - apprentices
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+SELECT (COUNT (distinct ?appMention) AS ?nbMentions) ?roles
+WHERE
+{
+  ?app  a common:Person ; grz-owl:hasRole/rdf:value ?role1, ?role2 .
+  ?app core:referredBy ?appMention .
+  FILTER (?role1 != ?role2)
+  BIND (CONCAT(STRAFTER(STR(?role1),"#"), STRAFTER(STR(?role2), "#")) AS ?roles)
+}
+GROUP BY ?app ?roles
+HAVING  COUNT (distinct ?appMention) > 1
+ORDER BY DESC (COUNT (distinct ?appMention))
