@@ -1,9 +1,10 @@
-#+ summary: What is the distribution of (annotated) contracts per register? 
+#+ summary: What is the distribution of contracts per register? 
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET
 #+ tags:
 #+   - barchart
 #+   - archive
+#+ params: ?_year 
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -12,6 +13,7 @@ PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
 PREFIX meta: <http://vocab.dhlab.epfl.ch/metadata#>
 PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT (STR(?label) AS ?label) (COUNT (?contract) AS ?NbContracts)

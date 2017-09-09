@@ -12,6 +12,7 @@ PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
 PREFIX meta: <http://vocab.dhlab.epfl.ch/metadata#>
 PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT (COUNT (distinct ?contract) AS ?NbContracts)

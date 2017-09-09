@@ -13,6 +13,7 @@ PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
 PREFIX meta: <http://vocab.dhlab.epfl.ch/metadata#>
 PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT (COUNT (?contract) AS ?NbContracts)
@@ -20,6 +21,7 @@ WHERE
 { 
   ?contract a grz-owl:Contract ; sem:hasTimeStamp ?date.
   BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
-  BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).
-  FILTER (?year > ?_date1 AND ?year < ?_date2)
+  BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year) 
+  FILTER (?year > ?_date1)
+  FILTER (?year < ?_date2)
 }
