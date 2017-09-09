@@ -9,41 +9,21 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?role ?numberOfWomen (?numberOfWomen*100/?total as ?percentWomen) ?numberOfMen (?numberOfMen*100/?total as ?percentMen)
-WHERE 
-{ 
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-  { SELECT COUNT (distinct ?pe) AS ?total WHERE {?pe a common:Person. ?pe foaf:gender ?gender} }
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-  { SELECT ?role COUNT (distinct ?women) AS ?numberOfWomen 
-    WHERE {?women a common:Person; grz-owl:hasRole/rdf:value ?role . ?women foaf:gender "female"}   
+SELECT ?role ?numberOfWomen (?numberOfWomen*100/?total AS ?percentWomen) ?numberOfMen (?numberOfMen*100/?total AS ?percentMen)
+WHERE
+{
+  { SELECT (COUNT (distinct ?pe) AS ?total) WHERE {?pe a common:Person. ?pe foaf:gender ?gender} }
+  { SELECT ?role (COUNT (distinct ?women) AS ?numberOfWomen )
+    WHERE {?women a common:Person; grz-owl:hasRole/rdf:value ?role . ?women foaf:gender "female"}
   }
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-  { SELECT ?role COUNT (distinct ?men) AS ?numberOfMen 
-    WHERE {?men a common:Person; grz-owl:hasRole/rdf:value ?role . ?men foaf:gender "male"}   
+  { SELECT ?role (COUNT (distinct ?men) AS ?numberOfMen )
+    WHERE {?men a common:Person; grz-owl:hasRole/rdf:value ?role . ?men foaf:gender "male"}
   }
 }
 GROUP BY ?role ?numberOfWomen ?numberOfMen ?total
