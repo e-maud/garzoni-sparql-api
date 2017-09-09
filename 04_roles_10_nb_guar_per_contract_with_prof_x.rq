@@ -9,20 +9,24 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?numberOfGuar COUNT (distinct ?app)
+SELECT ?numberOfGuar (COUNT (distinct ?app) AS ?NbApp)
 WHERE
 {
-  SELECT ?app COUNT (distinct ?guar) AS ?numberOfGuar
-  WHERE 
+  SELECT ?app (COUNT (distinct ?guar) AS ?numberOfGuar)
+  WHERE
   {
-    ?guar a grz-owl:Person . 
+    ?guar a grz-owl:Person .
     ?app a grz-owl:Person .
     ?master a grz-owl:Person .
-    ?guar  grz-owl:role/grz-owl:value/grz-owl:roleType grz-owl:guarantor .
-    ?master  grz-owl:role/grz-owl:value/grz-owl:roleType grz-owl:master .
-    ?app  grz-owl:role/grz-owl:value/grz-owl:roleType grz-owl:apprentice .
+    ?guar  grz-owl:role ?role . ?role rdfs:value grz-owl:Guarantor .
+    ?master  grz-owl:role ?role . ?role rdfs:value  grz-owl:Master .
+    ?app  grz-owl:role ?role . ?role rdfs:value  grz-owl:Apprentice .
     ?app grz-owl:has_master/grz-owl:value ?master .
     ?app grz-owl:has_guarantor/grz-owl:value ?guar .
     ?master grz-owl:profession/grz-owl:value/grz-owl:professionCategory "stampa" .

@@ -9,18 +9,25 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?app ?appName ?guar ?guarName ?contract1 AS ?contract ?date1 AS ?date
-WHERE 
+SELECT ?app ?appName ?guar ?guarName (?contract1 AS ?contract) (?date1 AS ?date)
+WHERE
 {
-  ?guar a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Guarantor ; rdfs:label ?guarName .
-  ?app a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Apprentice  ; rdfs:label ?appName .
-  ?app common:hasGuarantor/rdf:value ?guar .
-  ?app core:referredBy/core:isMentionedIn ?contract1 , ?contract2 .
+  ?guar a common:Person ; grz-owl:hasRole ?role ; rdfs:label ?guarName . ?role rdf:value grz-owl:Guarantor  .
+  ?app a common:Person ; grz-owl:hasRole ?role ; rdfs:label ?appName. ?role rdf:value grz-owl:Apprentice   .
+  ?app common:hasGuarantor ?rel. ?rel rdf:value ?guar .
+  ?app core:referredBy ?ment1, ?ment2 .
+  ?ment1 core:isMentionedIn ?contract1  .
+  ?ment2 core:isMentionedIn ?contract2 .
   ?contract1 sem:hasTimeStamp ?date1 .
   ?contract2 sem:hasTimeStamp ?date2 .
   FILTER (?contract1 != ?contract2)
+  FILTER (?ment1 != ?ment2)
 }
 GROUP BY ?app ?guar ?guarName ?appName
 ORDER BY ?app
