@@ -3,22 +3,26 @@
 #+ method: GET
 #+ tags:
 #+   - apprentices
-#+  params: ?_nbappMentions
+#+ params: ?_nbappMentions
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT ?app ?appName (COUNT (distinct ?appMention) AS ?nbMentions)
 WHERE
 {
-  ?app  a common:Person ; grz-owl:hasRole/rdf:value grz-owl:Apprentice ; rdfs:label ?appName.
+  ?app  a common:Person ; rdfs:label ?appName ; grz-owl:hasRole ?role . ?role rdf:value grz-owl:Apprentice .
   ?app core:referredBy ?appMention .
   ?appMention grz-owl:hasRole grz-owl:Apprentice .
 }
 GROUP BY ?app ?appName
-HAVING  COUNT (distinct ?appMention) > 2
-ORDER BY DESC (COUNT (distinct ?appMention))
+HAVING(?nbMentions > 2)
+ORDER BY DESC (?nbMentions)

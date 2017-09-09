@@ -10,9 +10,13 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?age COUNT (distinct ?app) 
+SELECT ?age (COUNT (distinct ?app) AS ?NbApp)
 WHERE
 {
   ?app  a common:PersonMention .
@@ -20,10 +24,11 @@ WHERE
   ?app grz-owl:hasRole  grz-owl:Apprentice ; grz-owl:hasProfession/grz-owl:professionCategory 'specchiaio' .
   ?app foaf:age ?age .
   ?app core:isMentionedIn ?contract .
-  ?contract sem:hasTimeStamp ?date . 
-  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
+  ?contract sem:hasTimeStamp ?date .
+  BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate)
   BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year)
-  FILTER (?year > 1400 AND ?year < 1900)
+  FILTER (?year > ?_date_start)
+  FILTER (?year < ?_date_end)
 }
 GROUP BY ?age
 ORDER BY ASC (?age)

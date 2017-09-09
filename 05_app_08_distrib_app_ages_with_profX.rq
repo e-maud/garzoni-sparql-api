@@ -11,14 +11,18 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?age COUNT (distinct ?app) 
+SELECT ?age (COUNT (distinct ?app) AS ?NbApp)
 WHERE
 {
   ?app  a common:PersonMention ;  core:isMentionedIn ?contract .
   #?_profCategory is a string: "specchiaio, cappellaio, etc."
-  ?app grz-owl:hasRole  grz-owl:Apprentice ; grz-owl:hasProfession/grz-owl:professionCategory ?_profCategory .
+  ?app grz-owl:hasRole  grz-owl:Apprentice ; grz-owl:hasProfession ?prof. ?prof grz-owl:professionCategory ?_profCategory .
   ?app foaf:age ?age .
 }
 GROUP BY ?age

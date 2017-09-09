@@ -1,4 +1,4 @@
-#+ summary: What is the distriution of apprentices per age (based on mentions)? 
+#+ summary: What is the distribution of apprentices per age (based on mentions)? 
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET
 #+ tags:
@@ -9,9 +9,13 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?age COUNT (distinct ?app) 
+SELECT ?age (COUNT (distinct ?app) AS ?NbApp)
 WHERE
 {
   ?app  a common:PersonMention .
