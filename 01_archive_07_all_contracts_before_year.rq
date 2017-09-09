@@ -2,7 +2,6 @@
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET
 #+ tags:
-#+   - number
 #+   - archive
 # params: ?_date
 
@@ -21,5 +20,4 @@ WHERE {
   ?contract a grz-owl:Contract ; sem:hasTimeStamp ?date .
   BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
   FILTER (?myDate < '?_date'^^xsd:dateTime)
-  #FILTER (?myDate < ?_date)
 }
