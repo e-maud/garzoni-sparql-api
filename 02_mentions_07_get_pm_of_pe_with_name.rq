@@ -9,11 +9,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT ?pm
 WHERE
 {
      ?pe a common:Person ; core:referredBy ?pm ; rdfs:label 'Marsilio Mesture (spezier)' .
-     ?pm a common:PersonMention 
+     ?pm a common:PersonMention
 }

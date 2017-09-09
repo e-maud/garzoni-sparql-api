@@ -9,19 +9,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT ( COUNT (distinct ?pe) AS ?NbPersonEntities) ?mentionCount
 WHERE
 {
-
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
-PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
-PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
 	SELECT ?pe (COUNT (distinct ?pm)  AS ?mentionCount)
 	WHERE
 	{
