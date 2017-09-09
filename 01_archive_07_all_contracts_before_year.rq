@@ -2,6 +2,7 @@
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET
 #+ tags:
+#+   - number
 #+   - archive
 # params: ?_date
 
@@ -10,7 +11,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
 PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
 SELECT (COUNT (?contract) AS ?NbContracts)
 WHERE {
