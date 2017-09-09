@@ -12,7 +12,7 @@ PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
 PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
-SELECT AVG (?contract)
+SELECT (AVG (?contract) AS ?AvgContract)
 WHERE
 {
   SELECT (COUNT (?c) AS ?contract)
