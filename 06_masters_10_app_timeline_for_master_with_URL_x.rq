@@ -1,0 +1,26 @@
+#+ summary: Given a master with URL x, give the timeline of his students' enrolment. 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - masters
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?app ?date
+WHERE
+{
+  <http://data.dhlab.epfl.ch/garzoni/490933da-c839-4942-8f13-98e069a022f5-personEntity> common:hasApprentice ?appStatement .
+  ?appStatement rdf:value ?app .
+  ?appStatement sem:hasBeginTimeStamp ?date .
+}
+GROUP BY ?app
+ORDER BY ASC(?date)
