@@ -4,7 +4,7 @@
 #+ tags:
 #+   - number
 #+   - archive
-#+ params: ?_year 
+#+ params: ?_year ?month
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -15,7 +15,7 @@ PREFIX meta: <http://vocab.dhlab.epfl.ch/metadata#>
 PREFIX edm: <http://www.europeana.eu/schemas/edm/>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT AVG (?contract)
+SELECT (AVG (?contract) AS ?AvgContract)
 WHERE
 {
   SELECT (COUNT (?c) AS ?contract)
@@ -27,11 +27,14 @@ WHERE
     BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).
     BIND(IF(?myDate != "NO DATE", month(?myDate), "NODATE") AS ?month).
     BIND(IF(?myDate != "NO DATE", day(?myDate), "NODATE") AS ?day).
+    #FILTER (?year = ?_year)
+    #FILTER (?month = ?_month)
+    #FILTER (?day = ?_day)
   }
   # for average per day:
   # GROUP BY ?year ?month ?day
   # for avergae per month:
   # GROUP BY ?year ?month
   # for average per year:
-  # GROUP BY ?year
+  GROUP BY ?year
 }
