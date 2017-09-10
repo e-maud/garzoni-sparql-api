@@ -1,0 +1,25 @@
+#+ summary: How many apprenticeships have which duration (in number of months)? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - events
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX time: <http://www.w3.org/2006/time#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?DurationMonth (COUNT (distinct?appship) AS ?NbAppShip)
+WHERE 
+{
+ ?appship sem:eventType grz-owl:Apprenticeship ; common:duration  ?dur . 
+ BIND(xsd:integer(?dur) AS ?DurationMonth)
+} 
+GROUP BY ?durInt
+ORDER BY ?durInt
