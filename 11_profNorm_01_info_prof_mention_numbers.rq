@@ -1,0 +1,43 @@
+#+ summary: Give me information on number of profession mentions: total, with or without transcript (TR, NoTR), standardForm (SF, NoSF), category (CAT, NoCat) 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - profession normalisation 
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX iiif: <http://iiif.io/api/presentation/2#>
+PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?totalProfMention ?ProfMention_TR_SF_CAT ?ProfMention_TR_SF_NoCAT ?ProfMention_TR_NoSF_NoCAT  ?ProfMention_Suggested_TR_SF_CAT ?ProfMention_NoTR_SF_NoCAT ?ProfMention_TR_NoSF_CAT
+WHERE 
+{ 
+{SELECT (COUNT (distinct ?prof) AS ?totalProfMention) 
+ WHERE { ?prof a grz-owl:ProfessionMention .}}
+{SELECT (COUNT (distinct ?prof_TR_SF_CAT) AS ?ProfMention_TR_SF_CAT)
+ WHERE {?prof_TR_SF_CAT a grz-owl:ProfessionMention; common:transcript ?t ; common:standardForm ?sf ; grz-owl:professionCategory ?cat .}}
+{SELECT (COUNT (distinct ?prof_TR_SF_CAT_Sugg) AS ?ProfMention_Suggested_TR_SF_CAT)
+ WHERE {?prof_TR_SF_CAT_Sugg a grz-owl:ProfessionMention; common:transcript ?t ; common:suggestedStandardForm ?sf ; grz-owl:suggestedProfessionCategory ?cat .}}
+{SELECT (COUNT (distinct ?prof_TR_SF_NoCat) AS ?ProfMention_TR_SF_NoCAT)
+ WHERE {?prof_TR_SF_NoCat a grz-owl:ProfessionMention; common:transcript ?t ; common:standardForm ?sf .
+ FILTER NOT EXISTS {?prof_TR_SF_NoCat grz-owl:professionCategory ?cat .}}}
+{SELECT (COUNT (distinct ?prof_TR_NoSF_NoCat) AS ?ProfMention_TR_NoSF_NoCAT)
+ WHERE {?prof_TR_NoSF_NoCat a grz-owl:ProfessionMention; common:transcript ?t .
+ FILTER NOT EXISTS {?prof_TR_NoSF_NoCat grz-owl:professionCategory ?cat .}
+ FILTER NOT EXISTS {?prof_TR_NoSF_NoCat common:standardForm ?sf .}}}
+{SELECT (COUNT (distinct ?prof_NoTR_SF_NoCat) AS ?ProfMention_NoTR_SF_NoCAT)
+ WHERE {?prof_NoTR_SF_NoCat a grz-owl:ProfessionMention; common:standardForm ?sf .
+ FILTER NOT EXISTS {?prof_NoTR_SF_NoCat grz-owl:professionCategory ?cat .} 
+ FILTER NOT EXISTS {?prof_NoTR_SF_NoCat common:transcript ?t .}}}
+{SELECT (COUNT (distinct ?prof_TR_NoSF_CAT) AS ?ProfMention_TR_NoSF_CAT)
+ WHERE {?prof_TR_NoSF_CAT a grz-owl:ProfessionMention; common:transcript ?t; grz-owl:professionCategory ?cat .
+ FILTER NOT EXISTS {?prof_TR_NoSF_CAT  common:standardForm ?sf . }}}
+}

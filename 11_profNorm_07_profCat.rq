@@ -1,0 +1,21 @@
+#+ summary: Get the list of profession categories (existing in dataset) 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - profession normalisation 
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX iiif: <http://iiif.io/api/presentation/2#>
+PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT distinct ?profcat
+WHERE {?prof grz-owl:professionCategory ?profcat .}
