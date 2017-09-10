@@ -1,0 +1,33 @@
+#+ summary: How many apprentices do guarantor have on average, within a time window and a specific profession category (TBU)? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - guarantors
+#+ params: ?_date_start ?_date_end
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT (AVG (?numberApp) AS ?AvgContract)
+WHERE
+{
+	SELECT (COUNT (distinct ?app) AS ?numberApp) 
+	WHERE
+	{?g  a common:Person ; grz-owl:hasRole ?r ; common:isGuarantorOf ?app . ?r rdf:value grz-owl:Guarantor  .
+         ?g core:referredBy ?pm . ?pm core:isMentionedIn ?contract .
+    	 ?contract sem:hasTimeStamp ?date . 
+	 BIND(IF(?date = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?date) ) AS ?myDate) 
+	 BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year)
+	 FILTER ( ?year > ?_date_start)
+	 FILTER ( ?year < ?_date_end)
+	}
+GROUP BY ?g
+}
