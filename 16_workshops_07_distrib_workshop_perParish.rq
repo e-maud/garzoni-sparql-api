@@ -1,0 +1,22 @@
+#+ summary: What is the distribution of workshops per parishes? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - workshop
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?labelParish (COUNT (distinct ?workshop) AS ?NbWorkshop) (STR(?labelSestiere) AS ?labelSestiere)
+WHERE
+{
+  ?workshop a grz-owl:WorkshopMention .
+  ?workshop grz-owl:hasLocation/common:inParish ?parish . 
+  ?parish rdfs:label ?labelParish ; common:inSestiere ?s . ?s rdfs:label ?labelSestiere .
+}
+GROUP BY ?labelParish ?labelSestiere
+ORDER BY DESC (COUNT (distinct ?workshop))

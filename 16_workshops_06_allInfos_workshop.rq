@@ -1,0 +1,27 @@
+#+ summary: Give me all workshop mentions, their location information, their insigna and the year they were mentioned. 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - workshop
+# N.B. : to filter by date add:  FILTER (?myDate < "1653-03-15"^^xsd:dateTime AND ?myDate > "1630-03-15"^^xsd:dateTime)
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?workshop  (STR(?i) AS ?insigna) ?locTranscript ?locStandard (STR(?labelParish) AS ?parishLabel) (STR(?labelSestiere) AS ?pestiereLabel) ?date
+WHERE 
+{
+  ?pl a common:PlaceMention . 
+  ?workshop a grz-owl:WorkshopMention ; grz-owl:hasLocation ?pl  ; ^grz-owl:hasWorkshop ?master .
+  OPTIONAL { ?pl common:transcript ?locTranscript ; common:standardForm ?locStandard}
+  OPTIONAL { ?pl common:inParish ?parish. ?parish rdfs:label ?labelParish; common:inSestiere ?s . ?s rdfs:label ?labelSestiere .}
+  OPTIONAL { ?workshop grz-owl:insigna ?i }
+  ?master core:isMentionedIn ?contract .
+  ?contract sem:hasTimeStamp ?myDate .
+  BIND(IF(?myDate = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?myDate) ) AS ?date) 
+} 
+ORDER BY ASC(?locTranscript)

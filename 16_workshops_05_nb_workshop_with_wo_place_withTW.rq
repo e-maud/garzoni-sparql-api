@@ -1,0 +1,40 @@
+#+ summary: Idem as 4), with time window filter. 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - workshop
+#+ params: ?_date_start ?_date_end
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?WorkshopWithPlaceInfo ?WorkshopWithoutPlaceInfo
+WHERE 
+{ 
+  {SELECT (COUNT (distinct ?ws) AS ?WorkshopWithPlaceInfo)
+  WHERE 
+  {
+      ?ws a grz-owl:WorkshopMention ; grz-owl:hasLocation ?pl ; ^grz-owl:hasWorkshop ?master.
+      ?master core:isMentionedIn/sem:hasTimeStamp ?myDate .
+      BIND(IF(?myDate = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?myDate) ) AS ?date)
+      BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).   
+      FILTER (?year > 1550)
+      FILTER (?year < 1598)
+  } 
+  }
+  {SELECT (COUNT (distinct ?ws) AS ?WorkshopWithoutPlaceInfo)
+  WHERE 
+  {
+    ?ws a grz-owl:WorkshopMention ; ^grz-owl:hasWorkshop ?master.
+    ?master core:isMentionedIn/sem:hasTimeStamp ?myDate .
+    BIND(IF(?myDate = "0"^^<http://www.w3.org/2001/XMLSchema#gYear>,"NO DATE", xsd:dateTime(?myDate) ) AS ?date)
+    BIND(IF(?myDate != "NO DATE", year(?myDate), "NODATE") AS ?year).
+    FILTER (?year > 1550)
+    FILTER (?year < 1598)
+    FILTER (NOT EXISTS{?ws grz-owl:hasLocation ?pl} ) }
+  }
+}

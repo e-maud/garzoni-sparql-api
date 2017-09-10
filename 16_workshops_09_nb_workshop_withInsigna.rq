@@ -1,0 +1,23 @@
+#+ summary: How many workshop have the indication if an insigna? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - workshop
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?WorkshopWithInsigna ?WorkshopWithoutInsigna
+WHERE 
+{ 
+  {SELECT (COUNT (distinct ?ws) AS ?WorkshopWithInsigna)
+  WHERE {?ws a grz-owl:WorkshopMention ; grz-owl:insigna ?i} 
+  }
+  {SELECT (COUNT (distinct ?ws) AS ?WorkshopWithoutInsigna)
+  WHERE {?ws a grz-owl:WorkshopMention . FILTER (NOT EXISTS{?ws grz-owl:insigna ?i} ) }
+  }
+}

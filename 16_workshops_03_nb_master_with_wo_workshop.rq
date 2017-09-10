@@ -1,0 +1,27 @@
+#+ summary: How many masters are associated with a workshop or *not*? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - workshop
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT ?MasterWithWorkshop ?MasterWithoutWorkshop
+WHERE 
+{ 
+  {SELECT (COUNT (distinct ?m) AS ?MasterWithWorkshop)
+  WHERE 
+  {?m a common:PersonMention ; grz-owl:hasRole grz-owl:Master ; grz-owl:hasWorkshop ?ws . 
+   ?ws a grz-owl:WorkshopMention} 
+  }
+  {SELECT (COUNT (distinct ?m) AS ?MasterWithoutWorkshop)
+  WHERE 
+  {?m a common:PersonMention ; grz-owl:hasRole grz-owl:Master .
+  FILTER (NOT EXISTS{ ?m grz-owl:hasWorkshop ?ws . })}
+  }
+} 
