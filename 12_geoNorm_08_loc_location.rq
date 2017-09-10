@@ -1,0 +1,31 @@
+#+ summary: Get locations as object of grz-owl:hasLocation (of Workshop Mentions and Charge Mentions) 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - location normalisation
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX iiif: <http://iiif.io/api/presentation/2#>
+PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT distinct (STRAFTER(STR(?pl), "garzoni/") AS ?WorkshopPlaceEntity) ?Transcript ?Standard (STR(?labelParish) AS ?ParishLabel) (STR(?sestiere) AS ?SestiereLabel)
+WHERE 
+{
+  ?pl a common:PlaceMention . 
+  ?pl ^grz-owl:hasLocation ?y .
+  OPTIONAL { ?pl common:transcript ?Transcript }
+  OPTIONAL { ?pl common:standardForm ?Standard }
+  OPTIONAL { ?pl common:inParish ?parish. ?parish rdfs:label ?labelParish; common:inSestiere ?s . ?s rdfs:label ?sestiere .}
+} 
+GROUP BY ?Transcript ?Standard ?labelParish ?sestiere
+ORDER BY ASC(?Transcript)

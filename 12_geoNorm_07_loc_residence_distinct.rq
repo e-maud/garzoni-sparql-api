@@ -1,0 +1,31 @@
+#+ summary: Get locations as object of grz-owl:hasResidence (of masters mainly), with distinct lowercase transcripts and standard forms, and without place entity urls. 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+   - location normalisation
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://vocab.dhlab.epfl.ch/data-core#>
+PREFIX common: <http://vocab.dhlab.epfl.ch/data-common#>
+PREFIX grz-owl: <http://vocab.dhlab.epfl.ch/garzoni#>
+PREFIX meta: <http://vocab.dhlab.epfl.ch/archive-metadata#>
+PREFIX edm: <http://www.europeana.eu/schemas/edm/>
+PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1>
+PREFIX iiif: <http://iiif.io/api/presentation/2#>
+PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
+
+SELECT distinct ?TranscriptResidence  ?Standard (STR(?labelParish) AS ?labelParish) (STR(?labelSestiere) AS ?labelSestiere)
+WHERE 
+{
+  ?pl a common:PlaceMention . 
+  ?pl ^grz-owl:hasResidence ?y .
+  OPTIONAL { ?pl common:transcript ?tr . BIND(str(lcase(?tr)) AS ?TranscriptResidence)}
+  OPTIONAL { ?pl common:standardForm ?st . BIND(str(lcase(?st)) AS ?Standard)}
+  OPTIONAL { ?pl common:inParish ?parish. ?parish rdfs:label ?labelParish; common:inSestiere ?s . ?s rdfs:label ?labelSestiere .}
+} 
+GROUP BY ?TranscriptResidence ?Standard ?labelParish ?labelSestiere
+ORDER BY ASC(?Transcript)
