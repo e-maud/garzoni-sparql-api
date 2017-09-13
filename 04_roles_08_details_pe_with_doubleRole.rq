@@ -2,7 +2,7 @@
 #+ endpoint: http://128.178.60.47:8890/sparql
 #+ method: GET
 #+ tags:
-#+   - roles
+#+  - 04_roles
 # N.B.: more role can be added (e.g. guarantor)
 # For counting, replace the first line by SELECT COUNT distinct ?pe
 
