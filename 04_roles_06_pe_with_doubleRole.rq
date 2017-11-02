@@ -17,12 +17,17 @@ PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?pe (COUNT (distinct ?pm) AS ?nbMentions)
+
+
+SELECT ?pe ?label (COUNT (distinct ?pm) AS ?nbMentions)
 WHERE
 {
-  ?pe  a common:Person ; grz-owl:hasRole ?role. ?role rdf:value grz-owl:Apprentice ; rdf:value grz-owl:Master .
-  ?pe core:referredBy ?pm .
+  ?pe  a common:Person ; rdfs:label ?label; grz-owl:hasRole ?role1 ; grz-owl:hasRole ?role2 .
+  ?role1 rdf:value grz-owl:Apprentice .
+  ?role2 rdf:value grz-owl:Master .
+ ?pe core:referredBy ?pm .
 }
-GROUP BY ?pe
-HAVING(?nbMentions > 1)
+GROUP BY ?pe ?label
 ORDER BY DESC (?nbMentions)
+
+#before: ?role rdf:value grz-owl:Apprentice ; rdf:value grz-owl:Master .

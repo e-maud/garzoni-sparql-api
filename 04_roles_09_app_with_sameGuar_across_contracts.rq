@@ -18,8 +18,8 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 SELECT ?app ?appName ?guar ?guarName (?contract1 AS ?contract) (?date1 AS ?date)
 WHERE
 {
-  ?guar a common:Person ; grz-owl:hasRole ?role ; rdfs:label ?guarName . ?role rdf:value grz-owl:Guarantor  .
-  ?app a common:Person ; grz-owl:hasRole ?role ; rdfs:label ?appName. ?role rdf:value grz-owl:Apprentice   .
+  ?guar a common:Person ; grz-owl:hasRole ?roleG ; rdfs:label ?guarName . ?roleG rdf:value grz-owl:Guarantor  .
+  ?app a common:Person ; grz-owl:hasRole ?roleA ; rdfs:label ?appName. ?roleA rdf:value grz-owl:Apprentice   .
   ?app common:hasGuarantor ?rel. ?rel rdf:value ?guar .
   ?app core:referredBy ?ment1, ?ment2 .
   ?ment1 core:isMentionedIn ?contract1  .

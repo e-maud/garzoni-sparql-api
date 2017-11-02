@@ -17,6 +17,6 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 SELECT ?pm
 WHERE
 {
-     ?pe a common:Person ; core:referredBy ?pm ; rdfs:label 'Marsilio Mesture (spezier)' .
+     ?pe a common:Person ; core:referredBy ?pm ; rdfs:label "Marsilio Mesture (spezier)"@ita .
      ?pm a common:PersonMention
 }

@@ -15,8 +15,14 @@ PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?master ?masterName (COUNT (distinct ?appStatement) AS ?numberApp)
-WHERE  {  ?master a common:Person; common:hasApprentice ?appStatement ; rdfs:label ?masterName }
-GROUP BY ?master ?masterName
-HAVING(?numberApp > 1)
-ORDER BY DESC(?numberApp)
+SELECT ?master ?label ?NbApp
+WHERE
+{
+SELECT ?master ?label COUNT (distinct ?appStatement) AS ?NbApp
+WHERE  {  ?master a common:Person; common:hasApprentice ?appStatement ; rdfs:label ?label. }
+GROUP BY ?master ?label
+}
+GROUP BY ?NbApp
+HAVING(?NbApp > 2)
+ORDER BY DESC(?NbApp)
+

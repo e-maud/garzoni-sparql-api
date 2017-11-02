@@ -16,6 +16,8 @@ PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
+SELECT ?app ?appName ?nbMentions
+{
 SELECT ?app ?appName (COUNT (distinct ?appMention) AS ?nbMentions)
 WHERE
 {
@@ -24,5 +26,7 @@ WHERE
   ?appMention grz-owl:hasRole grz-owl:Apprentice .
 }
 GROUP BY ?app ?appName
-HAVING(?nbMentions > 2)
 ORDER BY DESC (?nbMentions)
+}
+GROUP BY ?app ?appName
+HAVING(?nbMentions > 2)

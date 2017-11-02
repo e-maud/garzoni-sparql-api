@@ -14,12 +14,12 @@ PREFIX edm: <http://www.europeana.eu/schemas/edm/>
 PREFIX dhc: <http://vocab.dhlab.epfl.ch/dhcanvas#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
 
-SELECT ?pe ( COUNT (distinct ?pm) AS ?NbMentions )
+SELECT ?pe ?label ( COUNT (distinct ?pm) AS ?NbMentions )
 WHERE
 {
      ?pm a common:PersonMention ; core:refersTo ?pe .
-     ?pe a common:Person .
+     ?pe a common:Person ; rdfs:label ?label .
 }
-GROUP BY ?pe
+GROUP BY ?pe ?label
 ORDER BY DESC (COUNT (distinct ?pm))
 LIMIT 10

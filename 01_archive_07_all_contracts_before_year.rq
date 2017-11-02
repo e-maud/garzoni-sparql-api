@@ -3,7 +3,7 @@
 #+ method: GET
 #+ tags:
 #+  - 01_archive
-# params: ?_date
+# params: ?_date (in format YYYY-MM-DD, e.g. 1634-12-01)
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
