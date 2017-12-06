@@ -1,6 +1,6 @@
 
 
-
+```sparql
 SELECT ?year ?labelParish (COUNT (distinct ?workshop) AS ?NbWorkshop)
 WHERE
 {
@@ -13,3 +13,4 @@ WHERE
 }
 GROUP BY ?labelParish  ?year
 ORDER BY ASC (?year)
+```
