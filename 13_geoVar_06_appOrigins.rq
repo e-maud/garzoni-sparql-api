@@ -1,0 +1,16 @@
+```sparql
+#+ summary: Geographical origins of apprentices
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+  - 13_geography
+
+SELECT ?label ?geo (COUNT (distinct ?y) AS ?NbApp)
+WHERE 
+{ 
+?placeEntity grz-owl:suggestedGeonames ?geo ; rdfs:label ?label.
+?placeEntity core:referredBy ?placeMention.
+?y grz-owl:hasGeographicalOrigin ?placeMention  
+} 
+GROUP BY ?geo ?label
+```
