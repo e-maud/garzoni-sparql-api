@@ -1,0 +1,24 @@
+```sparql
+#+ summary: Get distribution of profession categories over parishes and over the years.
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+  - 13_geography
+# WARNING: not sure there are interesting results for all categories. 
+# This result display should show how many prof categories are linked with a parish, vs, how are not.
+
+SELECT ?year ?labelParish (COUNT (distinct ?prof) AS ?Nbprof)
+WHERE 
+{ 
+
+?prof grz-owl:professionCategory "tessitore"@ita ; ^grz-owl:hasProfession ?personMention .
+?personMention core:isMentionedIn ?contract ; grz-owl:hasWorkshop ?workshop. 
+?contract sem:hasTimeStamp ?date .
+BIND(year(?date) AS ?year).
+?workshop grz-owl:hasLocation/common:inParish ?parish .
+?parish rdfs:label ?labelParish .
+}
+GROUP BY ?labelParish ?year
+ORDER BY ASC(?year)
+
+```
