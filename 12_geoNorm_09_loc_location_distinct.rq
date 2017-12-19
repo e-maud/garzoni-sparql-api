@@ -28,4 +28,4 @@ WHERE
   OPTIONAL { ?pl common:inParish ?parish. ?parish rdfs:label ?labelParish; common:inSestiere ?s . ?s rdfs:label ?labelSestiere .}
 } 
 GROUP BY ?TranscriptLocation ?Standard ?labelParish ?labelSestiere
-ORDER BY ASC(?Transcript)
+ORDER BY ASC(?TranscriptLocation)
