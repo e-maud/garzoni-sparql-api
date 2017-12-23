@@ -1,0 +1,18 @@
+#+ summary: Given a specific parish, how many workshops are there over the years? 
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+  - 16_workshop
+
+
+SELECT ?year ?labelParish (COUNT (distinct ?workshop) AS ?NbWorkshop)
+WHERE
+{
+  ?workshop a grz-owl:WorkshopMention .
+  ?workshop grz-owl:hasLocation/common:inParish <http://data.dhlab.epfl.ch/garzoni/parish-San-Biagio> .
+  <http://data.dhlab.epfl.ch/garzoni/parish-San-Biagio> rdfs:label ?labelParish . 
+  ?workshop grz-owl:isWorkshopOf/core:isMentionedIn/sem:hasTimeStamp ?date
+  BIND(year(?date) AS ?year)
+}
+GROUP BY ?labelParish  ?year
+ORDER BY ASC (?year)
