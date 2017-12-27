@@ -1,0 +1,19 @@
+#+ summary: Give me contracts without mentions.
+#+ endpoint: http://128.178.60.47:8890/sparql
+#+ method: GET
+#+ tags:
+#+  - 17_verification
+
+SELECT ?c ?reg ?date ?DHCLink
+WHERE 
+{
+  ?c a grz-owl:Contract . 
+  OPTIONAL{?c sem:hasTimeStamp ?date}
+  ?c grz-owl:onMultiplePages false .
+  ?c ^edm:realizes ?page .
+  ?page a meta:Page; meta:isImagedBy ?x . ?x iiif:service ?DHCLink .
+  ?page meta:isPageOf/rdfs:label ?reg
+  FILTER NOT EXISTS 
+  {?c core:hasMention ?apprenticeMention .
+   ?apprenticeMention a common:PersonMention}
+}
