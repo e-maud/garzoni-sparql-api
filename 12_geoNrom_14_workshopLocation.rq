@@ -1,0 +1,12 @@
+
+SELECT distinct (STR(?i) AS ?insigna) (STR(?locTranscript) AS ?LocationTranscript) ?locStandard (STR(?labelParish) AS ?parishLabel) (STR(?labelSestiere) AS ?sestiereLabel)
+WHERE 
+{
+  ?workshop a grz-owl:WorkshopMention ; grz-owl:hasLocation ?pl  .
+  OPTIONAL { ?pl common:transcript ?locTranscript .}
+  OPTIONAL { ?pl common:standardForm ?locStandard .}
+  OPTIONAL { ?pl common:inParish ?parish. ?parish rdfs:label ?labelParish; common:inSestiere ?s . ?s rdfs:label ?labelSestiere .}
+  OPTIONAL { ?workshop grz-owl:insigna ?i }
+  FILTER (BOUND(?locTranscript) OR BOUND(?i))
+} 
+ORDER BY ASC(?locTranscript)
