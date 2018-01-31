@@ -32,22 +32,28 @@ WHERE
         OPTIONAL {?app grz-owl:hasGeographicalOrigin ?appGeoOrigin.
                  ?appGeoOrigin common:transcript ?appGeoOriginTranscript .
                  OPTIONAL {?appGeoOrigin common:standardForm ?appGeoOriginStandardForm} }
+	
 	# get other professions
         OPTIONAL {?app grz-owl:hasProfession ?otherProf .
 	?otherProf common:transcript ?otherProfTR .}
+	
 	# info contract
 	?contract a grz-owl:Contract; dhc:uuid ?contractUUID ; sem:hasTimeStamp ?date ; ^edm:realizes ?page ; core:hasMention ?master .
 	?page a meta:Page; meta:isImagedBy ?x . ?x iiif:service ?DHCLink .
 	BIND (year(?date) AS ?year).
+	
         # info master 
         ?master grz-owl:hasRole grz-owl:Master ; grz-owl:hasProfession ?profMaster .
         ?profMaster common:transcript ?ptMaster .
         OPTIONAL { ?profMaster common:standardForm ?ptsf.}
+	
 	# nested query to select app with "servir"
 	{SELECT ?app  ?profTR
 	WHERE {?app a common:PersonMention ;  grz-owl:hasRole grz-owl:Apprentice ;  grz-owl:hasProfession ?prof.
-		?prof common:transcript ?profTR .
-		?profTR bif:contains "'servir*'".}
+		OPTIONAL {?prof common:transcript ?profTR . ?profTR bif:contains "'servir*'" }
+		OPTIONAL {?app grz-owl:details ?details. ?details bif:contains "'servir*'"}
+		FILTER (BOUND(?profTR) OR BOUND(?details))
+	       }
 	}
 }
 ORDER BY ASC(?date) ?appLabel
